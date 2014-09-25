@@ -1,5 +1,5 @@
 
-/* Reference as a return value */
+/* Time functions practice */
 
 #include<iostream>
 #include<string>
