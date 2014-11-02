@@ -6,7 +6,8 @@ typedef struct node {
 
     int value;
     node* left; 
-    node* right;    
+    node* right;
+    node* parent;    
 
 } node;
 
@@ -14,22 +15,24 @@ typedef struct node {
 node* getNode(int value) {
     node* temp = new node();
     temp->value = value;
-    temp->right = temp->left = NULL;    
+    temp->right = temp->left = temp->parent = NULL;
     return temp;
 }
 
 node* insert (node* root, int value) {
     
     if (root == NULL) {
-        root = getNode(value);       
+        root = getNode(value);
     }
     else {
         // check values with right and left subtree
         if(value <= root->value) {
-            root->left = insert(root->left, value);    
+            root->left = insert(root->left, value); 
+            (root->left)->parent = root;  
         }
         else{
             root->right = insert(root->right, value);    
+            (root->right)->parent = root;
         }
     }
     return root;
@@ -111,7 +114,36 @@ void insertLeftmost(node*root, int value) {
     if (root == NULL) return;
     while(root->left != NULL) root = root->left;    
     root->left = getNode(value);
+    (root->left)->parent = root;
 }
+
+
+node* leftmostChild(node* n) {
+    if (n == NULL) return NULL;
+    while(n->left!=NULL) n = n->left;
+    return n;    
+}
+
+node* inorderSuccessor (node* n) {
+    if (n == NULL) return NULL;
+    
+    if(n->right != NULL) {
+        return leftmostChild(n->right);
+    }
+    else {
+        node* q = n;
+        node* p = q->parent;
+        
+        while(p != NULL && p->right == q) {
+            q = p; //q->parent;
+            p = q->parent;    
+        } 
+        return p;   
+    }
+}
+
+
+
 
 
 int main() {
@@ -121,10 +153,10 @@ int main() {
     root = insert(root, 5);    
     root = insert(root, 7);    
     root = insert(root, 3);    
-    //root = insert(root, 2);    
-    //root = insert(root, 4);
+    root = insert(root, 2);    
+    root = insert(root, 4);
     root = insert(root, 8);    
-    //root = insert(root, 6);
+    root = insert(root, 6);
     inorder(root); 
     cout << endl << "Height: \t" << Height(root) << endl;
     cout << endl << "isBalancedSimple: \t" << isBalancedSimple(root) << endl;
@@ -132,4 +164,11 @@ int main() {
 
     insertLeftmost(root, -1);
     cout << endl << "isBST: \t" << checkBST(root) << endl;
+
+    node* l = root;
+    node* ios = inorderSuccessor(l);
+
+    inorder(root);
+    if(ios!=NULL) 
+        cout << endl << "Inorder successor or " << l->value << " is: " << ios->value << endl;
 }
