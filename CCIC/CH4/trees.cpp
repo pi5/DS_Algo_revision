@@ -89,6 +89,30 @@ bool isBalancedOptimized(node* root) {
     else return true;
 }
 
+bool checkBST(node* root, int min, int max){
+    
+    if (root == NULL) return true;
+    int value = root->value;
+    
+    if (value < min || value >= max) return false;
+    
+    return checkBST(root->left, min, value) && checkBST(root->right, value, max);
+    
+}
+
+bool checkBST(node* root) {
+    int max = 99999;
+    int min = -99999;
+    return checkBST(root, min, max);
+}
+
+
+void insertLeftmost(node*root, int value) {
+    if (root == NULL) return;
+    while(root->left != NULL) root = root->left;    
+    root->left = getNode(value);
+}
+
 
 int main() {
 
@@ -104,6 +128,8 @@ int main() {
     inorder(root); 
     cout << endl << "Height: \t" << Height(root) << endl;
     cout << endl << "isBalancedSimple: \t" << isBalancedSimple(root) << endl;
-    cout << endl << "isBalancedOptimized: \t" << isBalancedOptimized(root) << endl;
+    cout << endl << "isBST: \t" << checkBST(root) << endl;
 
+    insertLeftmost(root, -1);
+    cout << endl << "isBST: \t" << checkBST(root) << endl;
 }
