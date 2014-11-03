@@ -142,6 +142,27 @@ node* inorderSuccessor (node* n) {
     }
 }
 
+bool covers(node* root, node* p) {
+    if (root == NULL) return false;
+    if (root == p) return true;
+    
+    return covers(root->left, p) || covers(root->right, p);    
+}
+
+node* firstCommonAncestor(node* root, node* p, node* q) {
+    if(root == NULL) return NULL;    
+    if (root == p || root == q) return root;
+
+    bool p_on_left = covers(root->left, p);
+    bool q_on_left = covers(root->left, q);
+    
+    // if they are on the same side
+    if (p_on_left != q_on_left) return root;
+    else{
+        if(p_on_left) return firstCommonAncestor(root->left, p, q);
+        else return firstCommonAncestor(root->right, p, q);    
+    }
+}
 
 
 
@@ -171,4 +192,10 @@ int main() {
     inorder(root);
     if(ios!=NULL) 
         cout << endl << "Inorder successor or " << l->value << " is: " << ios->value << endl;
+
+
+    node *a = root->left;
+    node *b = leftmostChild(root);
+    node *c = firstCommonAncestor(root, a, b);
+    cout << endl << "firstCommonAncestor of " << a->value << " and " << b->value << " is " << c->value << endl;
 }
