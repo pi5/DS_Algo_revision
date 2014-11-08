@@ -136,7 +136,25 @@ class LinkedList {
 
         return true;   
     }
+    
+    void reverseList() {
         
+        cout << endl << "Reversing List ..." << endl;
+       
+        // Initialize prev and next to NULL and curr to head 
+        Node* prev = NULL;
+        Node* curr = head;
+        Node* next = NULL;
+        
+        while(curr) {
+            next = curr->getNext();
+            curr->setNext(prev);
+            prev = curr;
+            curr = next;    
+        }
+        head = prev;
+        cout << endl << "Reversing complete ..." << endl;
+    } 
 };
 
 
@@ -145,18 +163,21 @@ int main() {
     
     LinkedList a;
     a.insert(5);
-    a.insert(5);
+    a.insert(6);
+    a.insert(7);
+    a.insert(8);
+    a.insert(9);
     a.insert(10);
-    a.insert(15);
-    a.insert(10);
-    a.insert(5);
     //a.insert(30);
     //a.insert(35);
     //a.insert(40);
     //a.insert(45);
     a.printList();    
+    a.reverseList();
+    a.printList();
     //a.tail->setNext(a.head->getNext()->getNext());
     //a.printList();    
-    cout << "IsPalindrome?: " << a.checkIfPalindrome();
+    //cout << "IsPalindrome?: " << a.checkIfPalindrome();
+    //cout << ": " << a.checkIfPalindrome();
     cout << endl;
 }
