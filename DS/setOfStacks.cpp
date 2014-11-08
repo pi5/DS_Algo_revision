@@ -24,11 +24,10 @@ class setOfStacks {
     }
 
     void push(int value) {
-         
         if(curr_stack==-1 || (stacks[curr_stack]->size() == max_stack_size && no_stacks < MAXSTACKS)) {
             stacks[++curr_stack] = new stack<int>;
             ++no_stacks;
-            cout << endl << "No Stacks " << no_stacks << " curr_stack " << curr_stack;
+            //cout << endl << "No Stacks " << no_stacks << " curr_stack " << curr_stack;
         }        
         
         // Check if we still are in limit of number of stacks
@@ -38,7 +37,7 @@ class setOfStacks {
             cout << endl << "Stack:" << curr_stack << "\t" << "Size: " << stacks[curr_stack]->size();
         }
         else{
-            cout << endl << "All stacks occupied" << endl;
+            cout << endl << "Error: All stacks occupied";
             return;
         }
     }
